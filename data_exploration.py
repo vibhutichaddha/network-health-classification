@@ -1,0 +1,13 @@
+import pandas as pd
+df=pd.read_csv("telecom_kpi.csv")
+print("First five rows:",df.head())
+print("Dataset Shape:",df.shape)
+print("Column names: ",df.columns)
+print("Missing Values:",df.isnull().sum())
+print("Total missing values:",df.isnull().sum().sum())
+print("Duplicate Records:",df.duplicated().sum())
+print("Statistical Summary:",df.describe())
+df.describe(include="all")
+print("Unique Values:",df.nunique())
+print("Dataset Information:",df.info())
+df.to_csv("telecom_kpi_clean.csv",index=False)
