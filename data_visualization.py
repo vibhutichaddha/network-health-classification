@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-df=pd.read_csv("telecom_kpi.csv")
+df=pd.read_csv("telecom_kpi_balanced.csv")
 def classify_network(row):
     if row["RSRP"]>-90 and row["SINR"]>20 and row["Latency"]<20:
         return "Healthy"

@@ -1,5 +1,5 @@
 import pandas as pd
-df=pd.read_csv("telecom_kpi.csv")
+df=pd.read_csv("telecom_kpi_balanced.csv")
 df["Signal_Quality"]=(0.6*df["SINR"]+0.4*df["RSRP"]+120)
 df[["RSRP","SINR","Signal_Quality"]].head()
 Maximum_Users=df["Connected_Users"].max()

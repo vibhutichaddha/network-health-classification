@@ -1,0 +1,100 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import label_binarize
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (accuracy_score,precision_score,recall_score,f1_score,confusion_matrix,ConfusionMatrixDisplay,roc_curve,auc)
+df=pd.read_csv("telecom_kpi_preprocessed.csv")
+print(df.head())
+print(df["Network_Status"].value_counts())
+X=df.drop(columns=["Cell_ID","Timestamp","Network_Status"])
+y=df["Network_Status"]
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.20,random_state=42,stratify=y) 
+scaler=StandardScaler()
+X_train=scaler.fit_transform(X_train)
+X_test=scaler.fit_transform(X_test)
+lr=LogisticRegression(random_state=42,max_iter=1000)
+lr.fit(X_train,y_train)
+lr_pred=lr.predict(X_test)
+dt=DecisionTreeClassifier(random_state=42)
+dt.fit(X_train,y_train)
+dt_pred=dt.predict(X_test)
+rf=RandomForestClassifier(n_estimators=100,random_state=42)
+rf.fit(X_train,y_train)
+rf_pred=rf.predict(X_test)
+def evaluate_model(name,y_test,y_pred):
+    accuracy=accuracy_score(y_test,y_pred)
+    precision=precision_score(y_test,y_pred,average="weighted")
+    recall=recall_score(y_test,y_pred,average="weighted")
+    f1=f1_score(y_test,y_pred,average="weighted")
+    print(f"\nName")
+    print(f"Accuracy Score:",accuracy)
+    print(f"Precision Score:",precision)
+    print(f"Recall Score:",recall)
+    print("F1 Score:",f1)
+evaluate_model("Logistic Regression",y_test,lr_pred)
+evaluate_model("Decision Tree",y_test,dt_pred)
+evaluate_model("Random Forest",y_test,rf_pred)
+results=pd.DataFrame({"Model":["Logistic Regression","Decision Tree","Random Forest"],
+                      "Accuracy":[accuracy_score(y_test,lr_pred),accuracy_score(y_test,dt_pred),accuracy_score(y_test,rf_pred)],
+                      "Precision":[precision_score(y_test,lr_pred,average="weighted"),precision_score(y_test,dt_pred,average="weighted"),precision_score(y_test,rf_pred,average="weighted")],
+                      "Recall":[recall_score(y_test,lr_pred,average="weighted"),recall_score(y_test,dt_pred,average="weighted"),recall_score(y_test,rf_pred,average="weighted")],
+                      "F1 Score":[f1_score(y_test,lr_pred,average="weighted"),f1_score(y_test,dt_pred,average="weighted"),f1_score(y_test,rf_pred,average="weighted")]})
+print(results)
+def plot_confusion_matrix(model_name,y_test,y_pred):
+    cm=confusion_matrix(y_test,y_pred)
+    plt.figure(figsize=(6,5))
+    sns.heatmap(cm,annot=True,cmap="Blues",fmt="d")
+    plt.title(model_name)
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.savefig(model_name.replace(" ","_")+"_CM.png",dpi=300)
+    plt.show()
+plot_confusion_matrix("Logistic Regression",y_test,lr_pred)
+plot_confusion_matrix("Decision Tree",y_test,dt_pred)
+plot_confusion_matrix("Random Forest",y_test,rf_pred)
+classes=sorted(y.unique())
+y_test_bin=label_binarize(y_test,classes=classes)
+y_score=lr.predict_proba(X_test)
+plt.figure(figsize=(8,6))
+for i in range(len(classes)):
+    fpr,tpr,_=roc_curve(y_test_bin[:, i],y_score[:, i]) 
+    roc_auc=auc(fpr,tpr)
+    plt.plot(fpr,tpr,label=f"Class{i}AUC={roc_auc};2f")
+plt.plot([0,1],[0,1],"k--")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True POsitive Rate")
+plt.title("ROC Curve-Logistic Regression")
+plt.legend()
+plt.savefig("ROC_LogisticRegression.png",dpi=300)
+plt.show()
+y_score=dt.predict_proba(X_test)
+plt.figure(figsize=(8,6))
+for i in range (len(classes)):
+    fpr,tpr,_=roc_curve(y_test_bin[:,i],y_score[:,i]) 
+    roc_auc=auc(fpr,tpr)
+    plt.plot(fpr,tpr,label=f"Class{i}AUC={roc_auc};2f")
+plt.plot([0,1],[0,1],"k--")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True POsitive Rate")
+plt.title("ROC Curve-Decision Tree")
+plt.legend()
+plt.savefig("ROC_DecisionTree.png",dpi=300)
+plt.show()
+y_score=rf.predict_proba(X_test)
+plt.figure(figsize=(8,6))
+for i in range (len(classes)):
+    fpr,tpr,_=roc_curve(y_test_bin[:,i],y_score[:,i]) 
+    roc_auc=auc(fpr,tpr)
+    plt.plot(fpr,tpr,label=f"Class{i}AUC={roc_auc};2f")
+plt.plot([0,1],[0,1],"k--")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True POsitive Rate")
+plt.title("ROC Curve-Random Forest")
+plt.legend()
+plt.savefig("ROC_RandomForest.png",dpi=300)
+plt.show()

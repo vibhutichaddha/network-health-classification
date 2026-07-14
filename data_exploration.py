@@ -1,5 +1,5 @@
 import pandas as pd
-df=pd.read_csv("telecom_kpi.csv")
+df=pd.read_csv("telecom_kpi_balanced.csv")
 print("First five rows:",df.head())
 print("Dataset Shape:",df.shape)
 print("Column names: ",df.columns)

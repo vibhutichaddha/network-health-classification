@@ -9,13 +9,14 @@ df[numeric_columns]=df[numeric_columns].fillna(df[numeric_columns].mean())
 print("Duplicate Records:",df.duplicated().sum())
 df=df.drop_duplicates()
 def classify_network(row):
-    if (row["RSRP"]>-90 and row["SINR"]>20 and row["Latency"]<20):
+    if row["RSRP"] > -90 and row["SINR"] > 20 and row["Latency"] < 20:
         return "Healthy"
-    elif (row["RSRP"]<-105 or row["SINR"]<10 or row["Latency"]>3):
+    elif row["RSRP"] < -105 or row["SINR"] < 10 or row["Packet_Loss"] > 3:
         return "Congested"
     else:
         return "Degraded"
 df["Network_Status"]=df.apply(classify_network,axis=1)
+print(df["Network_Status"].value_counts())
 encoder=LabelEncoder()
 df["Network_Status"]=encoder.fit_transform(df["Network_Status"])
 print(dict(zip(encoder.classes_,encoder.transform(encoder.classes_))))
