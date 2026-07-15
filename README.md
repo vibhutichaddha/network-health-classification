@@ -162,6 +162,129 @@ The trained models are evaluated using multiple performance metrics.
 * Confusion Matrix
 * ROC Curve (One-vs-Rest Strategy)
 
+# Task 9: Feature Importance Analysis
+
+Feature importance analysis is performed using the **Random Forest Classifier** to identify the KPIs that contribute the most to network health prediction.
+
+### Activities
+
+* Calculated feature importance scores using Random Forest.
+* Ranked all features based on their contribution.
+* Identified the **Top 5 most important KPIs**.
+* Visualized feature importance using a bar chart.
+
+### Outcome
+
+The analysis highlights the KPIs that have the greatest influence on network health classification, helping understand which network parameters are most critical for prediction.
+
+# Task 10: Model Comparison
+
+The performance of all trained machine learning models is compared using the evaluation metrics obtained during model testing.
+
+### Models Compared
+
+* Logistic Regression
+* Decision Tree Classifier
+* Random Forest Classifier
+
+### Comparison Metrics
+
+* Accuracy
+* Precision
+* Recall
+* F1 Score
+
+### Outcome
+
+A comparison table is created to evaluate the strengths and weaknesses of each model. Based on the evaluation results, the **Random Forest Classifier** is selected as the best-performing model due to its superior accuracy and overall classification performance.
+
+### Report Sections
+
+1. Problem Statement
+2. Dataset Description
+3. Features Used
+4. Models Evaluated
+5. Evaluation Results
+6. Best Model Selection
+7. Business Recommendations
+
+### Outcome
+
+The report provides a clear overview of the project, explains the methodology, summarizes the experimental results, and presents practical recommendations for improving telecom network monitoring and optimization.
+
+---
+
+# Technologies Used
+
+* Python
+* Pandas
+* NumPy
+* Matplotlib
+* Seaborn
+* Scikit-learn
+
+---
+
+# Complete Project Workflow
+
+```text
+Telecom KPI Dataset
+        │
+        ▼
+Task 1
+Data Exploration & Understanding
+        │
+        ▼
+Task 2
+Data Visualization
+        │
+        ▼
+Task 3
+Feature Engineering
+        │
+        ▼
+Task 4
+Data Preprocessing
+        │
+        ▼
+Task 5
+Machine Learning Model Development
+        │
+        ▼
+Task 6
+5-Fold Cross Validation
+        │
+        ▼
+Task 7
+Hyperparameter Tuning (GridSearchCV)
+        │
+        ▼
+Task 8
+Model Evaluation
+(Accuracy, Precision, Recall, F1 Score,
+Confusion Matrix, ROC Curve)
+        │
+        ▼
+Task 9
+Feature Importance Analysis
+        │
+        ▼
+Task 10
+Model Comparison
+        │
+        ▼
+Task 11
+Technical Report
+        │
+        ▼
+Best Model Selection &
+Business Recommendations
+```
+
+# Conclusion
+
+This project demonstrates a complete end-to-end machine learning pipeline for telecom network health classification. Beginning with raw telecom KPI data, the workflow includes data exploration, visualization, feature engineering, preprocessing, model training, cross-validation, hyperparameter tuning, model evaluation, feature importance analysis, and final model comparison. The Random Forest Classifier achieved the best overall performance and is recommended for deployment to support automated network monitoring, proactive fault detection, and improved service quality in telecom networks.
+
 ### Outcome
 
 The evaluation metrics and visualizations provide a comprehensive comparison of all three models and help identify the best-performing classifier for network health classification.
